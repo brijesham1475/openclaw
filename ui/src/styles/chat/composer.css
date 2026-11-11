@@ -92,7 +92,7 @@
   inset: -1px;
   padding: 1px;
   border-radius: inherit;
-  corner-shape: superellipse(1.5);
+  corner-shape: inherit;
   /* Comet, not a ring: a long fading tail behind a bright head, dark again
      right in front of it, so the light reads as travelling, not as a ring. */
   background: conic-gradient(
@@ -157,17 +157,13 @@
   color: color-mix(in srgb, var(--danger) 78%, var(--text));
 }
 
-.agent-chat__composer-status-band,
-.agent-chat__composer-error {
+.agent-chat__composer-status-band {
   display: flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
   font-size: var(--control-ui-text-sm);
   line-height: 1.35;
-}
-
-.agent-chat__composer-status-band {
   width: 100%;
   padding: 8px 14px;
   white-space: nowrap;
@@ -594,38 +590,15 @@
   color: var(--text);
 }
 
-.agent-chat__composer-errors {
+.agent-chat__composer-alert {
   width: 100%;
-  background: color-mix(in srgb, var(--danger) 8%, var(--chat-composer-surface));
-  color: color-mix(in srgb, var(--danger) 78%, var(--text));
-}
-
-.agent-chat__composer-errors--standalone {
-  overflow: hidden;
-}
-
-:root[data-theme-mode="light"] .agent-chat__composer-errors {
-  background: color-mix(in srgb, var(--danger) 14%, var(--chat-composer-surface));
-}
-
-.agent-chat__composer-error {
+  min-height: 44px;
   padding: 8px 10px 8px 14px;
+  font-size: var(--control-ui-text-sm);
+  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
-.agent-chat__composer-error + .agent-chat__composer-error {
-  border-top: 1px solid color-mix(in srgb, var(--danger) 16%, transparent);
-}
-
-.agent-chat__composer-error-icon {
-  display: inline-flex;
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  color: var(--danger);
-}
-
-.agent-chat__composer-error-icon svg,
 .agent-chat__video-preview-switch svg,
 .chat-controls__permission-icon svg,
 .chat-controls__permission-lock svg,
@@ -633,22 +606,6 @@
 .chat-controls__target-icon svg {
   width: 100%;
   height: 100%;
-}
-
-.agent-chat__composer-error .callout__dismiss {
-  margin: -4px -4px -4px 0;
-  border-radius: var(--radius-full);
-  opacity: 0.72;
-}
-
-.agent-chat__composer-error .callout__dismiss:hover {
-  background: transparent;
-  opacity: 1;
-}
-
-.agent-chat__talk-status-text {
-  min-width: 0;
-  flex: 1;
 }
 
 /* Bars-only meter; the stop-voice pill button supplies the chrome around it. */
@@ -768,8 +725,7 @@
   color: var(--text);
 }
 
-.chat-talk-input-picker__settings svg,
-.chat-attachment-remove svg {
+.chat-talk-input-picker__settings svg {
   width: 13px;
   height: 13px;
 }
@@ -1006,7 +962,6 @@
 }
 
 .chat-talk-input-picker__note,
-.chat-talk-input-picker__warning,
 .chat-talk-input-picker__hint {
   padding: 5px 8px;
   color: var(--muted);
@@ -1014,8 +969,8 @@
   line-height: 1.35;
 }
 
-.chat-talk-input-picker__warning {
-  color: var(--warn);
+.chat-talk-input-picker__alert {
+  width: 100%;
 }
 
 /* Sole content of the popover when no input can be selected, so it carries the
@@ -1034,10 +989,6 @@
   font-size: 12px;
   line-height: 1.4;
   text-wrap: pretty;
-}
-
-.chat-talk-input-picker__empty--fault {
-  color: var(--warn);
 }
 
 .chat-talk-input-picker__hint {
@@ -1226,7 +1177,7 @@
 }
 
 @media (max-width: 768px), (max-width: 932px) and (max-height: 500px) and (orientation: landscape) {
-  .agent-chat__composer-error .callout__dismiss {
+  .agent-chat__composer-alert .callout__dismiss {
     width: 44px;
     height: 44px;
     margin-block: -8px;
@@ -1488,34 +1439,37 @@
   overscroll-behavior-inline: contain;
   scrollbar-width: none;
 
-  .chat-selection-annotations__chip.chat-attachment-thumb {
-    height: 56px;
-    min-width: 0;
-    max-width: min(216px, 100%);
-    border-color: var(--border);
-  }
+  .chat-comment-preview {
+    .chat-selection-annotations__chip.chat-attachment-thumb {
+      --chat-attachment-radius: calc(var(--radius-md) * var(--openclaw-corner-radius-scale));
 
-  .chat-selection-annotations__chip .chat-attachment-file {
-    gap: 10px;
-    padding: 7px 13px 7px 7px;
-  }
+      height: 30px;
+      max-width: min(216px, 100%);
+    }
 
-  .chat-attachment-preview-icon {
-    display: grid;
-    place-items: center;
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    border-radius: max(0px, calc(var(--chat-attachment-radius) - 8px));
-    corner-shape: inherit;
-    background: color-mix(in srgb, var(--text) 4%, transparent);
-    color: var(--muted);
-  }
+    .chat-attachment-file {
+      gap: 6px;
+      padding: 6px 8px;
+    }
 
-  .chat-attachment-preview-icon svg {
-    width: 16px;
-    height: 16px;
-    stroke-width: 1.75px;
+    .chat-attachment-preview-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 16px;
+      width: 16px;
+      height: 16px;
+      color: var(--muted);
+    }
+
+    .chat-attachment-preview-icon svg {
+      stroke-width: 1.75px;
+    }
+
+    .chat-comment-count-gap {
+      display: inline-block;
+      width: 4px;
+      font-size: 0;
+    }
   }
 
   &[data-disabled="true"] {
@@ -1577,10 +1531,10 @@
   flex: 0 0 auto;
   width: 56px;
   height: 56px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--chat-attachment-radius);
   corner-shape: superellipse(1.5);
-  background: var(--chat-composer-surface, var(--popover));
+  background: var(--card-highlight);
 }
 
 .chat-attachment-file {
@@ -1686,26 +1640,21 @@
   white-space: nowrap;
 }
 
+/* A corner badge over the thumbnail: the 32px hit area holds a 20px disc
+   and a 12px glyph so the X remains legible over an image. */
 .chat-attachment-remove {
+  --oc-icon-button-glyph: 12px;
   position: absolute;
   z-index: 1;
-  display: grid;
-  place-items: center;
-  border: none;
-  border-radius: var(--radius-full);
-  corner-shape: round;
   opacity: 0;
   transition: opacity var(--duration-fast) ease;
-
   top: -13px;
   right: -13px;
-  width: 32px;
-  height: 32px;
-  padding: 6px;
-  background: none;
-  color: var(--muted);
-  transform: none;
   isolation: isolate;
+}
+
+.chat-attachment-remove.oc-icon-button:hover:where(:not(:disabled)) {
+  background: transparent;
 }
 
 .chat-attachment-thumb:is(:hover, :focus-within) .chat-attachment-remove {
@@ -1750,7 +1699,7 @@
   padding: 0;
   border-radius: max(0px, calc(var(--chat-attachment-radius) - 8px));
   corner-shape: inherit;
-  background: color-mix(in srgb, var(--text) 4%, transparent);
+  background: transparent;
   color: var(--muted);
 }
 
@@ -1765,6 +1714,11 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
+}
+
+.chat-attachments-preview .chat-attachment-file__type,
+.chat-attachments-preview .chat-browser-annotation-card__meta {
+  color: var(--text);
 }
 
 .chat-attachment-file__type,
@@ -1864,14 +1818,17 @@
   z-index: -1;
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  background: var(--chat-composer-surface, var(--popover));
+  corner-shape: round;
+  background:
+    linear-gradient(var(--card-highlight), var(--card-highlight)),
+    var(--chat-composer-surface, var(--popover));
   box-shadow: var(--shadow-sm);
 }
 
-.chat-attachment-remove svg {
-  width: 12px;
-  height: 12px;
-  stroke-width: 2px;
+.chat-attachment-remove:hover:not(:disabled)::before {
+  background:
+    linear-gradient(var(--surface-hover), var(--surface-hover)),
+    var(--chat-composer-surface, var(--popover));
 }
 
 .chat-attachment-remove:disabled {
@@ -2038,12 +1995,10 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
   gap: var(--chat-composer-chip-gap, 6px);
   width: 100%;
   height: var(--chat-composer-chip-height, 30px);
-  min-height: var(--chat-composer-chip-height, 30px);
   /* Symmetric on purpose: this trigger carries a label and an optional leading
      icon, never a trailing one, so the old 6px trailing inset was unmatched
      asymmetry that made the chip look narrower on its right than its siblings. */
-  padding-block: 0;
-  padding-inline: var(--chat-composer-chip-padding-inline, 8px);
+  padding: 0 var(--chat-composer-chip-padding-inline, 8px);
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -2058,7 +2013,12 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
 }
 
 .agent-chat__input .chat-controls__inline-select-trigger {
+  /* The chip fills the action row's box (see --chat-composer-chip-height) and
+     paints its pill one step inside it, on the same 30px tier as the primary
+     action's painted disc. */
+  border-block: 1px solid transparent;
   border-radius: var(--radius-full);
+  background-clip: padding-box;
 }
 
 .agent-chat__composer-lead .chat-controls__permission-trigger {
@@ -2162,7 +2122,7 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
 .chat-controls__model-menu {
   box-shadow: none;
   min-height: 0;
-  width: min(340px, calc(100vw - 24px));
+  width: min(440px, calc(100vw - 24px));
   max-height: min(400px, var(--auto-size-available-height, calc(100vh - 96px)));
 }
 
@@ -2177,8 +2137,12 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
 .chat-controls__effort-menu {
   box-shadow: none;
   padding: var(--menu-padding);
-  width: min(330px, calc(100vw - 24px));
+  width: min(var(--chat-effort-menu-width, 280px), calc(100vw - 24px));
   max-height: min(280px, var(--auto-size-available-height, calc(100vh - 120px)));
+}
+
+.chat-controls__effort-menu:has(> .chat-controls__speed-panel) {
+  --chat-effort-menu-width: 330px;
 }
 
 .chat-controls__permission-menu {
@@ -2630,7 +2594,7 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
   contain-intrinsic-block-size: auto 0px;
   justify-content: flex-start;
   /* Grid-item min-width:auto would size the provider group's track to the
-     row's full content width (long name + meta), overflowing the 340px menu. */
+     row's full content width (long name + meta), overflowing the menu. */
   min-width: 0;
 }
 
@@ -2725,7 +2689,7 @@ html[dir="rtl"] .chat-attachments-preview .chat-attachment-loading__line > span 
   align-items: center;
   gap: 0;
   /* Flex min-width:auto would let a long model name + badges push the row
-     wider than the 340px menu and hand the popover a horizontal scrollbar. */
+     wider than the menu and hand the popover a horizontal scrollbar. */
   min-width: 0;
   color: var(--text);
   font-size: 13px;
